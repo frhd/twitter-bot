@@ -1,9 +1,3 @@
-/** TWITTER APP CONFIGURATION
- * consumer_key
- * consumer_secret
- * access_token
- * access_token_secret
- */
 module.exports = {
   consumer_key: 'kpTO6L3tPBP1gO7tAKf3v13J4',  
   consumer_secret: 'dJv4JKgFAvOHySGtGSEQkae7aWMts30JomfsbBHlkebujwUyAN',
