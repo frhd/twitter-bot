@@ -23,7 +23,7 @@
     };
     return Twitter.get('search/tweets', params, function(err, data) {
       var retweetId;
-      if (!err) {
+      if (err === false) {
         retweetId = data.statuses[0].id_str;
         return Twitter.post('statuses/retweet/:id', {
           id: retweetId

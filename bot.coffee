@@ -14,7 +14,7 @@ retweet = () ->
     lang: 'en'
 
   Twitter.get 'search/tweets', params, (err, data) ->
-    if not err
+    if err == false
       retweetId = data.statuses[0].id_str
       Twitter.post 'statuses/retweet/:id',
         id: retweetId
