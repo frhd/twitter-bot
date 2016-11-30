@@ -17,7 +17,7 @@
   retweet = function() {
     var params;
     params = {
-      q: '#logistics, #shipping, #freight, #SupplyChain, @Maersk',
+      q: '#logistics, #shipping, #freight, #supplychain',
       result_type: 'mixed',
       lang: 'en'
     };
