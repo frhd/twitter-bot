@@ -1,0 +1,23 @@
+{
+  "name": "twitter-bot",
+  "version": "1.0.0",
+  "description": "twit twit twit",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/frhd/twitter-bot.git"
+  },
+  "keywords": [
+    "twitter",
+    "bot"
+  ],
+  "author": "frhd",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/frhd/twitter-bot/issues"
+  },
+  "homepage": "https://github.com/frhd/twitter-bot#readme"
+}
