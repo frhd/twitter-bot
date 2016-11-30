@@ -73,10 +73,10 @@
 
   favoriteTweet();
 
-  setInterval(favoriteTweet, 15 * 60 * 1000);
+  setInterval(favoriteTweet, 5 * 60 * 1000);
 
   retweet();
 
-  setInterval(retweet, 15 * 60 * 1000);
+  setInterval(retweet, 5 * 60 * 1000);
 
 }).call(this);

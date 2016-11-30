@@ -16,8 +16,11 @@ retweet = () ->
     lang: 'en'
 
   Twitter.get 'search/tweets', params, (err, data) ->
+    tweet = data.statuses
+    randomTweet = rand tweet
+
     if !err?
-      retweetId = data.statuses[0].id_str
+      retweetId = randomTweet.id_str
       Twitter.post 'statuses/retweet/:id',
         id: retweetId
         (err, response) ->
@@ -31,7 +34,7 @@ retweet = () ->
       console.log err
 
 favoriteTweet = () ->
-  params = 
+  params =
     q: rand queryList
     result_type: 'mixed'
     lang: 'en'
