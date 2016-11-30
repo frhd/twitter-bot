@@ -7,29 +7,32 @@ rand = (arr) ->
 
 Twitter = new twit config
 
+queryList = ['#logistics', '#shipping', '#freight', '#supplychain', '#exports', '#trade']
+
 retweet = () ->
   params =
-    q: '#logistics, #shipping, #freight, #supplychain'
+    q: rand queryList
     result_type: 'mixed'
     lang: 'en'
 
   Twitter.get 'search/tweets', params, (err, data) ->
-    if err == false
+    if !err?
       retweetId = data.statuses[0].id_str
       Twitter.post 'statuses/retweet/:id',
         id: retweetId
         (err, response) ->
-          if response
+          if response? && !err?
             console.log 'Retweeted!'
-          if err
+          if err?
             console.log 'Something went wrong while Retweeting.'
-            console.log err
+            console.log err.message
     else
       console.log 'Something went wrong while Searching.'
+      console.log err
 
 favoriteTweet = () ->
   params = 
-    q: '#logistics, #shipping, #transport'
+    q: rand queryList
     result_type: 'mixed'
     lang: 'en'
 
@@ -39,8 +42,9 @@ favoriteTweet = () ->
 
     if typeof randomTweet != 'undefined'
       Twitter.post 'favorites/create', {id: randomTweet.id_str}, (err, response) ->
-        if err
+        if err?
           console.log 'Something went wrong on Favorite Tweet.'
+          console.log err.message
         else
           console.log 'Favorite OK.'
 
@@ -51,7 +55,3 @@ setInterval favoriteTweet, 15*60*1000
 retweet()
 
 setInterval retweet, 15*60*1000
-
-
-
-
