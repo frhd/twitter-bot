@@ -2,7 +2,7 @@
   "name": "twitter-bot",
   "version": "1.0.0",
   "description": "twit twit twit",
-  "main": "index.js",
+  "main": "bot.js",
   "scripts": {
     "test": "test"
   },
