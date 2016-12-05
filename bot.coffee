@@ -4,10 +4,10 @@ request = require 'request'
 
 ONE_SECOND = 1000
 ONE_MINUTE = 60 * ONE_SECOND
-DEFAULT_TIME = 5 * ONE_MINUTE
+
 DEFAULT_OPTIONS = 
   "queryList" : ["virtualreality", "#vr", "#oculus", "#vive", "revrsed", "psvr"]
-  "frequencyInMinutes" : 10
+  "frequencyInMinutes" : 5
 
 rand = (arr) ->
   index = Math.floor(Math.random()*arr.length)
@@ -62,10 +62,17 @@ favoriteTweet = () ->
 setCustomTimeout = (callback, time) ->
   internalCallback = ( (seconds) -> 
     return () ->
-      setTimeout internalCallback, config.frequencyInMinutes * ONE_MINUTE * ONE_SECOND
+
+      if time?
+        interval = time
+      else 
+        if !config.frequencyInMinutes?
+          config.frequencyInMinutes = DEFAULT_OPTIONS.frequencyInMinutes
+        interval = config.frequencyInMinutes * ONE_MINUTE * ONE_SECOND
+      
+      setTimeout internalCallback, interval
       callback()
-      if !config.frequencyInMinutes?
-        config.frequencyInMinutes = DEFAULT_OPTIONS.frequencyInMinutes      
+
       return
   )()
 
@@ -80,7 +87,9 @@ options =
 getAndSetConfig = () ->
   request.get options, (err, resp, body) ->
     try
+      console.log 'getting new config'
       config = (JSON.parse body)  
+      console.log config
     catch err
       console.log 'config sucks, using fallback'
       config = DEFAULT_OPTIONS
@@ -89,11 +98,11 @@ getAndSetConfig = () ->
 
 config = {}
 
-setCustomTimeout getAndSetConfig, ONE_SECOND, 0
+setCustomTimeout getAndSetConfig, 5 * ONE_MINUTE, 0
 
-retweet()
-favoriteTweet()
+#retweet()
+#favoriteTweet()
 
-setCustomTimeout retweet, 5 * ONE_MINUTE
-setCustomTimeout favoriteTweet, 5 * ONE_MINUTE
+setCustomTimeout retweet
+setCustomTimeout favoriteTweet
 

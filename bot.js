@@ -90,11 +90,17 @@
     var internalCallback;
     internalCallback = (function(seconds) {
       return function() {
-        setTimeout(internalCallback, config.frequencyInMinutes * ONE_MINUTE * ONE_SECOND);
-        callback();
-        if (config.frequencyInMinutes == null) {
-          config.frequencyInMinutes = DEFAULT_OPTIONS.frequencyInMinutes;
+        var interval;
+        if (time != null) {
+          interval = time;
+        } else {
+          if (config.frequencyInMinutes == null) {
+            config.frequencyInMinutes = DEFAULT_OPTIONS.frequencyInMinutes;
+          }
+          interval = config.frequencyInMinutes * ONE_MINUTE * ONE_SECOND;
         }
+        setTimeout(internalCallback, interval);
+        callback();
       };
     })();
     setTimeout(internalCallback, config.frequencyInMinutes);
@@ -110,7 +116,9 @@
   getAndSetConfig = function() {
     return request.get(options, function(err, resp, body) {
       try {
+        console.log('getting new config');
         config = JSON.parse(body);
+        console.log(config);
       } catch (error) {
         err = error;
         console.log('config sucks, using fallback');
@@ -121,14 +129,10 @@
 
   config = {};
 
-  setCustomTimeout(getAndSetConfig, ONE_SECOND, 0);
+  setCustomTimeout(getAndSetConfig, 5 * ONE_MINUTE, 0);
 
-  retweet();
+  setCustomTimeout(retweet);
 
-  favoriteTweet();
-
-  setCustomTimeout(retweet, 5 * ONE_MINUTE);
-
-  setCustomTimeout(favoriteTweet, 5 * ONE_MINUTE);
+  setCustomTimeout(favoriteTweet);
 
 }).call(this);
