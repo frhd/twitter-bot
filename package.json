@@ -23,6 +23,9 @@
   },
   "homepage": "https://github.com/frhd/twitter-bot#readme",
   "dependencies": {
+    "https": "^1.0.0",
+    "promise": "^7.1.1",
+    "request": "^2.79.0",
     "twit": "^2.2.5"
   },
   "devDependencies": {

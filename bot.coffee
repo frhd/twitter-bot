@@ -1,5 +1,13 @@
-twit = require 'twit'
-config = require './config.js'
+twit    = require 'twit'
+config  = require './config.js'
+request = require 'request'
+
+ONE_SECOND = 1000
+ONE_MINUTE = 60 * ONE_SECOND
+DEFAULT_TIME = 5 * ONE_MINUTE
+DEFAULT_OPTIONS = 
+  "queryList" : ["virtualreality", "#vr", "#oculus", "#vive", "revrsed", "psvr"]
+  "frequencyInMinutes" : 10
 
 rand = (arr) ->
   index = Math.floor(Math.random()*arr.length)
@@ -7,7 +15,7 @@ rand = (arr) ->
 
 Twitter = new twit config
 
-queryList = ['#logistics', '#shipping', '#freight', '#supplychain', '#exports', '#trade']
+queryList = DEFAULT_OPTIONS.queryList
 
 retweet = () ->
   params =
@@ -51,10 +59,41 @@ favoriteTweet = () ->
         else
           console.log 'Favorite OK.'
 
-favoriteTweet()
+setCustomTimeout = (callback, time) ->
+  internalCallback = ( (seconds) -> 
+    return () ->
+      setTimeout internalCallback, config.frequencyInMinutes * ONE_MINUTE * ONE_SECOND
+      callback()
+      if !config.frequencyInMinutes?
+        config.frequencyInMinutes = DEFAULT_OPTIONS.frequencyInMinutes      
+      return
+  )()
 
-setInterval favoriteTweet, 5*60*1000
+  setTimeout internalCallback, config.frequencyInMinutes
+  return
+
+#---------------------
+options = 
+  url: 'https://raw.githubusercontent.com/revrsed/bot/master/query.json'
+  headers: {'Cache-Control':'no-cache'}
+
+getAndSetConfig = () ->
+  request.get options, (err, resp, body) ->
+    try
+      config = (JSON.parse body)  
+    catch err
+      console.log 'config sucks, using fallback'
+      config = DEFAULT_OPTIONS
+
+    return
+
+config = {}
+
+setCustomTimeout getAndSetConfig, ONE_SECOND, 0
 
 retweet()
+favoriteTweet()
 
-setInterval retweet, 5*60*1000
+setCustomTimeout retweet, 5 * ONE_MINUTE
+setCustomTimeout favoriteTweet, 5 * ONE_MINUTE
+
